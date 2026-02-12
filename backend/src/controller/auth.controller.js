@@ -1,7 +1,7 @@
 const userModel = require("../models/user.model")
 const crypto = require('crypto')
 const jwt = require("jsonwebtoken")
-const bycrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs")
 
 
 async function registerController(req, res) {
@@ -32,7 +32,7 @@ async function registerController(req, res) {
     const user = await userModel.create({
         email,
         username,
-        password: await bycrypt.hash(password,10)
+        password: await bcrypt.hash(password,10)
     })
 
 
@@ -45,7 +45,7 @@ async function registerController(req, res) {
         {expiresIn:"1h"}
     )
     
-    res.cookie("token",token)
+    res.cookie("jwt",token)
 
     res.status(201).json({
 
@@ -95,7 +95,7 @@ async function loginController(req,res){
         process.env.JWT_SECRET
     )
 
-    res.cookie("token",token)
+    res.cookie("jwt",token)
 
     res.status(200).json({
         success:true,
