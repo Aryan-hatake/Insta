@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const followModel = require("../models/follow.model");
 const userModel = require("../models/user.model")
 
@@ -81,5 +82,100 @@ async function unfollowUserController(req,res){
         deleteRecord
     })
 }
+async function getFollowRequestsController(req,res) {
+     const user = req.username
+     
+     const followRecords = await followModel.find({
+        followee:user,
+        status:"pending"
+})
+     
+     if(followRecords.length===0){
+        return res.status(200).json({
+            message:"No follow request till now"
+        })
+     }
+   
+     res.status(200).json({
+         allRequest:followRecords
+     })
+}
+async function acceptFollowRequestsController(req,res) {
+    const user = req.username
+    const followId = req.params.followId
 
-module.exports = {followUserController,unfollowUserController}
+    let followRecord;
+
+    try{
+         followRecord = await followModel.findById(followId);
+    }
+    catch(err){
+           return res.status(400).json({
+                message:'non existent follow request'
+            })
+    }
+    
+    if(followRecord.followee !== user ){
+        return res.status(403).json({
+            message:"forbidden act"
+        })
+    }
+     
+    if(followRecord.status==="accepted"){
+        return res.status(400).json({
+            message:`${followRecord.follower}'s request has been already accepted`
+        })
+    }
+
+
+        followRecord.status = "accepted";
+    
+    
+    await followRecord.save(); 
+
+    res.status(200).json({
+        message:`${followRecord.follower}'s request accepted successfully`,
+        followRecord
+    })
+}
+async function rejectFollowRequestsController(req,res) {
+    const user = req.username;
+    const followId = req.params.followId;
+
+
+
+    let followRecord;
+    
+    
+         followRecord = await followModel.findById(followId);
+    
+     if(!followRecord){
+        return res.status(400).json({
+            message:"Non existent follow request"
+        })
+    }
+
+     
+    if(followRecord.followee !== user){
+        return res.status(403).json({
+            message:"forbidden act"
+        })
+    }
+
+    if(followRecord.status === "accepted"){
+         return res.status(400).json({
+            message:"follow request has been accepted try removing from followers"
+         })
+    }
+
+    const deleteRecord = await followModel.findByIdAndDelete(followId)
+
+    return res.status(200).json({
+        message:`${followRecord.follower}'s request has been rejected successfully`,
+        deleteRecord
+    })
+
+}
+
+
+module.exports = {followUserController,unfollowUserController,getFollowRequestsController,acceptFollowRequestsController,rejectFollowRequestsController}

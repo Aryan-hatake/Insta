@@ -68,7 +68,7 @@ async function likePostController(req,res) {
   
 
     const postId = req.params.pId;
-    console.log(postId)
+    
     const user = req.username;
 
     const isPostValid = await postModel.findOne({_id:postId})

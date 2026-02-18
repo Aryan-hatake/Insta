@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    followers:Array,
     bio:String,
     profile_img:{
         type:String,

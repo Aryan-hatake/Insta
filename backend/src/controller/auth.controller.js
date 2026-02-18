@@ -6,7 +6,8 @@ const bcrypt = require("bcryptjs")
 
 async function registerController(req, res) {
     const { email, password, username } = req.body;
-
+    
+    console.log(req.body)
     const userExist = await userModel.findOne({
         $or: [
             {
@@ -18,7 +19,7 @@ async function registerController(req, res) {
         ]
     })
 
-    console.log(userExist)
+
 
     if(userExist){
        return  res.status(409).json({
