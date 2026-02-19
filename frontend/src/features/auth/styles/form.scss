@@ -1,0 +1,55 @@
+main{
+    height:100vh;
+    width:100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: whitesmoke;
+
+
+    .form-container{
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+
+          h1{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 4rem;
+          }
+
+          form{
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+             
+            
+              input,button{
+                 font-size: 2rem;
+                 padding-inline: 2rem;
+                 padding-block: 1rem;
+                 border-radius: 1rem;
+                 border: none;
+                 outline: none;
+              }
+
+              button{
+                background: rgb(212, 28, 28);
+                color: white;
+                cursor: pointer;
+
+                &:active{
+                    scale: 0.98;
+                }
+              }
+
+              
+          }
+          
+    } 
+    
+}
+
+.authLinks{
+    text-decoration: none;
+    color: red;
+}

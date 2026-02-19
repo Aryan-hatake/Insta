@@ -53,7 +53,8 @@ async function registerController(req, res) {
 
         success:true,
         message:"User has been registered successfully",
-        token
+        token,
+        user
 
 
     })
@@ -102,7 +103,8 @@ async function loginController(req,res){
 
     res.status(200).json({
         success:true,
-        message:"User Logged in successfully"
+        message:"User Logged in successfully",
+        user
     })
 }
 
